@@ -39,7 +39,7 @@ loc_model, dam_model, device = load_models()
 
 # Sidebar for image selection
 st.sidebar.header("Select Disaster Event")
-images_dir = r"E:\train\images"
+images_dir = "./data/train/images"
 if os.path.exists(images_dir):
     all_files = os.listdir(images_dir)
     pre_images = sorted([f for f in all_files if f.endswith("_pre_disaster.png")])
