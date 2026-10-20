@@ -35,11 +35,9 @@ The final model weights are deployed via Streamlit Community Cloud for tactical 
 pip install -r requirements.txt
 
 **For running the dashboard:**
-```markdown
 ```bash
 streamlit run app.py
 
 **For generating the PDF:**
-```markdown
 ```bash
 python generate_bda_report.py
