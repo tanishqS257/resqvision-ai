@@ -5,7 +5,7 @@
 ![Streamlit](https://img.shields.io/badge/Streamlit-Cloud-FF4B4B)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
-**ResQVision AI** is an end-to-end Machine Learning pipeline and tactical intelligence dashboard designed for automated Battle Damage Assessment (BDA) and rapid disaster response. By processing high-resolution satellite imagery, the system locates man-made structures and evaluates their structural integrity following heavy weaponry strikes or natural disasters.
+**ResQVision AI** is an end-to-end ML model related to military and tactical intelligence dashboard designed for automated Battle Damage Assessment (BDA) and rapid disaster response[cite: 1]. By processing high-resolution satellite imagery, the system locates man-made structures and evaluates their structural integrity following heavy weaponry strikes or natural disasters.
 
 ## 🧠 Architecture: Two-Stage Siamese Network
 Predicting damage directly from raw imagery is highly inaccurate due to environmental noise. This project mitigates that using a two-stage computer vision architecture:
@@ -29,5 +29,5 @@ The final model weights are deployed via Streamlit Community Cloud for tactical 
 
 1. **Clone the repository:**
    ```bash
-   git clone [https://github.com/YOUR_USERNAME/resqvision-ai.git](https://github.com/tanishqS257/resqvision-ai.git)
+   git clone [https://github.com/tanishqS257/resqvision-ai.git](https://github.com/tanishqS257/resqvision-ai.git)
    cd resqvision-ai
