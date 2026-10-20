@@ -1,18 +1,33 @@
-# ResQVision AI
+# ResQVision AI 🛰️
 
-Satellite-based disaster damage assessment and relief prioritization.
+![Python](https://img.shields.io/badge/Python-3.12-blue)
+![PyTorch](https://img.shields.io/badge/PyTorch-2.0%2B-ee4c2c)
+![Streamlit](https://img.shields.io/badge/Streamlit-Cloud-FF4B4B)
+![License](https://img.shields.io/badge/License-MIT-green)
 
-## Planned features
-- Before-and-after satellite image comparison
-- Building damage classification
-- ML model evaluation
-- Geographic damage visualization
-- Disaster response prioritization dashboard
+**ResQVision AI** is an end-to-end Machine Learning pipeline and tactical intelligence dashboard designed for automated Battle Damage Assessment (BDA) and rapid disaster response. By processing high-resolution satellite imagery, the system locates man-made structures and evaluates their structural integrity following heavy weaponry strikes or natural disasters.
 
-## Dataset
-xBD / xView2: https://xview2.org/
+## 🧠 Architecture: Two-Stage Siamese Network
+Predicting damage directly from raw imagery is highly inaccurate due to environmental noise. This project mitigates that using a two-stage computer vision architecture:
 
-Review the dataset access conditions and license before use.
+1. **Building Localization (Stage 1):** A U-Net with a pre-trained ResNet34 encoder isolates and extracts building footprints strictly from the pre-event imagery.
+2. **Damage Severity Classification (Stage 2):** A Twin-Tower Substrate (TTS) Siamese U-Net processes both the pre- and post-event images. It computes the element-wise absolute difference across feature maps to isolate structural changes, outputting a 5-class severity mask (Background, No Damage, Minor Damage, Major Damage, Destroyed).
 
-## Status
-Project structure created. ML implementation is the next step.
+## 📊 Dataset & Processing
+This model was trained on the **xView2 (xBD) Challenge Dataset**. 
+* **Input Resolution:** Resized to 512x512 to accommodate hardware limits.
+* **Class Balancing:** Utilizes weighted CrossEntropyLoss to heavily penalize errors on destroyed structures, combatting the natural imbalance of undamaged buildings in satellite imagery.
+
+## 🚀 Live Dashboard Features
+The final model weights are deployed via Streamlit Community Cloud for tactical analysts. 
+* **Dual-Pane Inspection:** Interactive before/after visual slider.
+* **Dynamic Analytics:** Automated aggregation of structural damage metrics via Plotly.
+* **Threat Level Alerting:** Algorithmically flags operational zones as *Critical*, *Elevated*, or *Stable*.
+* **Intelligence Export:** One-click CSV extraction for downstream mission planning.
+
+## 💻 Local Installation & Usage
+
+1. **Clone the repository:**
+   ```bash
+   git clone [https://github.com/YOUR_USERNAME/resqvision-ai.git](https://github.com/tanishqS257/resqvision-ai.git)
+   cd resqvision-ai
