@@ -31,17 +31,15 @@ The final model weights are deployed via Streamlit Community Cloud for tactical 
    ```bash
    git clone [https://github.com/tanishqS257/resqvision-ai.git](https://github.com/tanishqS257/resqvision-ai.git)
    cd resqvision-ai
-Install dependencies:
-
-Bash
+```bash
 pip install -r requirements.txt
-(Note: Model artifact files .pth are managed via Git LFS).
 
-Run the Dashboard:
-
-Bash
+**For running the dashboard:**
+```markdown
+```bash
 streamlit run app.py
-Generate the PDF Technical Report:
 
-Bash
+**For generating the PDF:**
+```markdown
+```bash
 python generate_bda_report.py
