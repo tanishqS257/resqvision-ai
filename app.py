@@ -37,27 +37,45 @@ def load_models():
 
 loc_model, dam_model, device = load_models()
 
-# Sidebar for image selection
-st.sidebar.header("Select Disaster Event")
-images_dir = "./data/train/images"
-if os.path.exists(images_dir):
-    all_files = os.listdir(images_dir)
-    pre_images = sorted([f for f in all_files if f.endswith("_pre_disaster.png")])
-    selected_pre = st.sidebar.selectbox("Choose a Pre-Disaster Image:", pre_images)
-else:
-    st.sidebar.error(f"Could not find dataset directory at {images_dir}")
-    st.stop()
+# --- SIDEBAR: INPUT SELECTION ---
+st.sidebar.header("Image Selection Mode")
+input_mode = st.sidebar.radio("Choose Input Method:", ["Select from Dataset", "Upload Custom Images"])
 
-if selected_pre:
-    # Resolve file paths
-    selected_post = selected_pre.replace("_pre_disaster.png", "_post_disaster.png")
-    pre_path = os.path.join(images_dir, selected_pre)
-    post_path = os.path.join(images_dir, selected_post)
+pre_img = None
+post_img = None
+report_filename = "custom_upload"
+
+if input_mode == "Select from Dataset":
+    images_dir = "./data/train/images"
+    if os.path.exists(images_dir):
+        all_files = os.listdir(images_dir)
+        pre_images = sorted([f for f in all_files if f.endswith("_pre_disaster.png")])
+        selected_pre = st.sidebar.selectbox("Choose a Pre-Disaster Image:", pre_images)
+        
+        if selected_pre:
+            selected_post = selected_pre.replace("_pre_disaster.png", "_post_disaster.png")
+            pre_path = os.path.join(images_dir, selected_pre)
+            post_path = os.path.join(images_dir, selected_post)
+            
+            # Load and resize images
+            pre_img = Image.open(pre_path).convert("RGB").resize((512, 512), Image.Resampling.BILINEAR)
+            post_img = Image.open(post_path).convert("RGB").resize((512, 512), Image.Resampling.BILINEAR)
+            report_filename = selected_pre.replace('.png', '')
+    else:
+        st.sidebar.error(f"Could not find dataset directory at {images_dir}")
+
+elif input_mode == "Upload Custom Images":
+    st.sidebar.write("Upload perfectly aligned top-down satellite images.")
+    uploaded_pre = st.sidebar.file_uploader("1. Upload Pre-Disaster Image", type=["png", "jpg", "jpeg"])
+    uploaded_post = st.sidebar.file_uploader("2. Upload Post-Disaster Image", type=["png", "jpg", "jpeg"])
     
-    # Load and resize images for the model
-    pre_img = Image.open(pre_path).convert("RGB").resize((512, 512), Image.Resampling.BILINEAR)
-    post_img = Image.open(post_path).convert("RGB").resize((512, 512), Image.Resampling.BILINEAR)
-    
+    if uploaded_pre is not None and uploaded_post is not None:
+        # Load and resize uploaded images
+        pre_img = Image.open(uploaded_pre).convert("RGB").resize((512, 512), Image.Resampling.BILINEAR)
+        post_img = Image.open(uploaded_post).convert("RGB").resize((512, 512), Image.Resampling.BILINEAR)
+
+# --- MAIN DASHBOARD PIPELINE ---
+if pre_img is not None and post_img is not None:
     # Layout: Top row for Image Slider
     st.subheader("1. Satellite Imagery Comparison")
     image_comparison(
@@ -147,7 +165,8 @@ if selected_pre:
                 )
                 fig.update_layout(margin=dict(t=0, b=0, l=0, r=0), height=250)
                 st.plotly_chart(fig, use_container_width=True)
-                # 3. Export Capabilities
+                
+            # 3. Export Capabilities
             st.divider()
             st.subheader("3. Intelligence Export")
             
@@ -157,7 +176,7 @@ if selected_pre:
             st.download_button(
                 label="📥 Download BDA Summary Report (CSV)",
                 data=csv_data,
-                file_name=f"bda_report_{selected_pre.replace('.png', '')}.csv",
+                file_name=f"bda_report_{report_filename}.csv",
                 mime="text/csv",
                 type="primary"
             )
